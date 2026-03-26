@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dasis LLC — C132 Redline Guide V7 | Taylor Inn Hospitality Program</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#F8FAFC;color:#1F2937;display:flex;height:100vh;overflow:hidden}
+nav{width:220px;min-width:220px;background:linear-gradient(180deg,#0F172A 0%,#1E293B 100%);overflow-y:auto;display:flex;flex-direction:column;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+nav .hdr{padding:16px 14px 10px;border-bottom:1px solid rgba(255,255,255,0.08)}
+nav .hdr .co{font-size:10px;font-weight:700;letter-spacing:1.5px;color:#94A3B8}
+nav .hdr .ti{font-size:14px;font-weight:700;color:#F1F5F9;margin-top:2px}
+nav .hdr .sub{font-size:10px;color:#64748B;margin-top:3px}
+nav .hdr .badges{display:flex;gap:8px;margin-top:8px}
+nav .hdr .badges span{font-size:10px;color:#fff;padding:1px 6px;border-radius:3px}
+nav .hdr .badges .done-b{background:#059669}
+nav .hdr .badges .open-b{background:#EA580C}
+nav .btns{padding:6px 0;flex:1}
+nav .btns button{display:flex;align-items:center;gap:8px;width:100%;padding:8px 14px;border:none;background:transparent;color:#94A3B8;font-size:12px;cursor:pointer;text-align:left;border-left:3px solid transparent;transition:all 0.15s;font-family:inherit}
+nav .btns button:hover{color:#CBD5E1;background:rgba(255,255,255,0.03)}
+nav .btns button.active{background:rgba(59,130,246,0.15);color:#93C5FD;font-weight:600;border-left-color:#3B82F6}
+nav .btns button .ico{font-size:13px;width:22px;text-align:center}
+nav .ftr{padding:10px 14px;border-top:1px solid rgba(255,255,255,0.08);font-size:9px;color:#475569;line-height:1.5}
+main{flex:1;overflow-y:auto;padding:28px 36px}
+main .wrap{max-width:840px}
+h1{font-size:24px;font-weight:800;color:#0F172A;margin:0 0 4px}
+.intro{font-size:14px;line-height:1.7;color:#475569;margin-bottom:24px}
+.detail-card{margin-bottom:20px;padding:16px;background:#fff;border-radius:8px;border:1px solid #E2E8F0}
+.detail-card h3{margin:0 0 10px;font-size:15px;font-weight:700;color:#1E3A5F}
+.detail-card p{margin:0;font-size:13px;line-height:1.7;color:#334155}
+.detail-card ul{margin:0;padding-left:16px;list-style:none}
+.detail-card li{padding:3px 0;font-size:13px;color:#334155;padding-left:10px;position:relative}
+.detail-card li::before{content:'›';position:absolute;left:0;color:#3B82F6}
+.redline{border-radius:8px;padding:14px 18px;margin-bottom:12px;transition:box-shadow 0.15s}
+.redline.clickable{cursor:pointer}
+.redline .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.redline .top .left{flex:1}
+.redline .badges-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap}
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.5px;color:#fff}
+.badge-critical{background:#DC2626}.badge-important{background:#D97706}.badge-moderate{background:#2563EB}.badge-done{background:#059669}.badge-open{background:#EA580C}
+.redline .sec{font-family:monospace;font-size:12px;font-weight:600;color:#374151}
+.redline .desc{margin:0;font-size:13px;line-height:1.6;color:#1F2937}
+.redline .toggle{font-size:11px;color:#6B7280;white-space:nowrap;margin-top:4px}
+.redline .lang{margin-top:12px;padding:14px;background:#fff;border-radius:6px;border:1px solid #E5E7EB;font-family:Georgia,serif;font-size:12px;line-height:1.8;color:#111827;white-space:pre-wrap;font-style:italic;display:none}
+.redline.expanded .lang{display:block}
+.redline.expanded{box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+.rl-critical{background:#FEE2E2;border-left:4px solid #EF4444}
+.rl-important{background:#FEF3C7;border-left:4px solid #F59E0B}
+.rl-moderate{background:#DBEAFE;border-left:4px solid #3B82F6}
+.rl-done{background:#ECFDF5;border-left:4px solid #10B981}
+.rl-open{background:#FFF7ED;border-left:4px solid #F97316}
+.cl-group{margin-bottom:16px;border:1px solid #E2E8F0;border-radius:8px;overflow:hidden}
+.cl-group .cl-header{width:100%;padding:12px 16px;border:none;background:#F8FAFC;cursor:pointer;display:flex;justify-content:space-between;align-items:center;text-align:left;font-family:inherit}
+.cl-group .cl-header .cl-title{font-weight:700;font-size:14px;color:#0F172A}
+.cl-group .cl-header .cl-right{display:flex;align-items:center;gap:8px}
+.cl-group .cl-header .cl-count{background:#1E3A5F;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
+.cl-group .cl-body{padding:8px 16px 16px;display:none}
+.cl-group.open .cl-body{display:block}
+.cl-item{display:flex;gap:10px;padding:6px 0;border-bottom:1px solid #F1F5F9;align-items:flex-start}
+.cl-item:last-child{border-bottom:none}
+.cl-item .cl-num{font-size:11px;color:#9CA3AF;font-family:monospace;min-width:20px}
+.cl-item .cl-sec{font-size:11px;font-family:monospace;color:#6B7280;min-width:80px}
+.cl-item .cl-type{font-size:10px;font-weight:700;min-width:80px}
+.cl-item .cl-desc{font-size:12px;color:#334155;line-height:1.4}
+.type-NEW{color:#DC2626}.type-ADDED{color:#EA580C}.type-MODIFIED{color:#2563EB}.type-REMOVED{color:#6B7280}.type-REWRITTEN{color:#7C3AED}.type-CONSOLIDATED{color:#0891B2}.type-VERIFIED{color:#059669}
+.check-section{margin-bottom:22px}
+.check-section .check-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.check-section .check-head h3{margin:0;font-size:14px;font-weight:700;color:#1E3A5F}
+.check-section .check-head .cnt{font-size:11px;font-weight:600;color:#6B7280}
+.check-section .check-head .cnt.all-done{color:#059669}
+.progress-bar{background:#F3F4F6;border-radius:4px;height:5px;margin-bottom:8px}
+.progress-fill{height:5px;border-radius:4px;background:#3B82F6;transition:width 0.3s}
+.progress-fill.complete{background:#059669}
+.check-label{display:flex;align-items:flex-start;gap:8px;padding:5px 0;cursor:pointer;font-size:13px;line-height:1.5}
+.check-label input{margin-top:3px;accent-color:#3B82F6;width:15px;height:15px}
+.check-label.checked{color:#9CA3AF;text-decoration:line-through}
+.section-content{display:none}
+.section-content.active{display:block}
+@media print{nav{display:none}main{padding:10px}body{height:auto;overflow:visible}.redline .lang{display:block!important}.cl-group .cl-body{display:block!important}.section-content{display:block!important;page-break-inside:avoid;margin-bottom:24px}}
+@media(max-width:768px){nav{width:180px;min-width:180px}main{padding:16px 18px}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="hdr">
+    <div class="co">DASIS, LLC</div>
+    <div class="ti">C132 Redline Guide</div>
+    <div class="sub">Taylor Inn · V7 · March 2026</div>
+    <div class="badges"><span class="done-b" id="done-count"></span><span class="open-b" id="open-count"></span></div>
+  </div>
+  <div class="btns" id="nav-btns"></div>
+  <div class="ftr">33 changes · 15 new provisions<br>AIA C132-2019 · CMa · Cost-Plus</div>
+</nav>
+<main>
+  <div class="wrap" id="content"></div>
+</main>
+<script>
+const sections=[
+{id:"overview",label:"Overview",icon:"📋",title:"Master Agreement — Current State (V7)",intro:"This guide reflects the current V7 Working Draft of the AIA C132-2019 Master Agreement, Exhibit A (Scope of Services), Exhibit B V3 (Fee Schedule), PAE-1 through PAE-3, and the 33-item Contract Change Log. Active Adult Homes has been removed — the program is now three components.",details:[
+{heading:"Deal Structure",items:["Agreement: AIA C132-2019 — CM as Adviser (CMa)","Compensation: Cost of Work + 3% CM Advisory Fee (§11.1.2.1)","Labor: All CM Personnel at 1.4× salary burden multiplier (§12.3)","No CM Fee during Preconstruction Phase (§11.1.1)","Payment: Semi-monthly — 1st and 15th (§12.2), due within 15 days (§11.8.2.1.1)","Interest: 1.5%/month (18% annual) from day 16 (§11.8.2.1.1)","Duration: 21 months initial, extension = Additional Services (§4.2.5.1)","Liability Cap: Total compensation received, exceptions for fraud/willful misconduct (§8.1.3.1)"]},
+{heading:"Three Program Components",items:["PAE-1 — Taylor Inn Hotel & Event Center/Banquet (38 rooms, ~46,026 SF, 3 stories)","PAE-2 — Cottages — Guest Accommodations (14 units, 28 bedrooms) [Framework — pending]","PAE-3 — Master Site Development (campus infrastructure) [Framework — pending]"]},
+{heading:"Key Parties",items:["Owner: 1846 Enterprises, Inc. — Andrea Masvero, Executive Director","Program Manager: Jake McKim","CM: Dasis, LLC — Roger DeBoy (Managing Member, Master Agreement signatory)","CM Coordinator: Zach DeBoy (Project Director, PAE signatory)","Architect: Luminaut (David Rausch, Erin Jennings, Cara Weber, Amanda Searfoss)","Civil: HWC Engineering — Jason Spain, PE","Landscape: Context Design — Alyssa Prazeau"]},
+{heading:"Document Package (§13.2)",items:["C132-2019 Master Agreement (V7 Working Draft with tracked changes)","Exhibit A: Scope of Services","Exhibit B: Fee Schedule & Personnel Salary Schedule (V3)","Exhibit C: Insurance Requirements & Certificates","PAE-1: Hotel & Event Center (ready for execution)","PAE-2: Cottages (framework — pending program finalization)","PAE-3: Master Site Development (framework — pending civil design)"]}
+]},
+{id:"art1",label:"Art. 1 — Initial Info",icon:"§1",title:"Article 1 — Initial Information",intro:"Article 1 has been modified in V7 to reflect the three-component structure. All Active Adult references removed.",redlines:[
+{s:"§ 1.1.1 — Owner's Program ✅ DONE",p:"done",a:"Modified in V7. Three clean component bullets: Hotel & Event Center (PAE-1), Cottages (PAE-2), Master Site Development (PAE-3). Active Adult removed. (Change Log #1)"},
+{s:"§ 1.1.2–1.1.8 — Project-Specific Info ✅ DONE",p:"done",a:"All deferred to applicable Project Authorization Exhibit."},
+{s:"§ 1.1.5 — Procurement Method ✅ DONE",p:"done",a:"Competitive bidding with multiple prime Trade Contractors. Min 2 bids, target 3. Written award recommendations to Executive Director."},
+{s:"§ 1.1.9 — Owner's Representative ✅ DONE",p:"done",a:"Andrea Masvero (Executive Director) and Jake McKim (Program Manager) identified."},
+{s:"§ 1.1.12 — CM Representatives ✅ DONE",p:"done",a:"Six named: Zach DeBoy, Kevin Huber, Roger DeBoy, Allen Shirley, Bill Reynolds, Matt McComas."},
+{s:"§ 1.1.13 — Staffing Plan ✅ DONE",p:"done",a:"References Exhibit B and applicable PAE staffing plans."},
+{s:"§ 1.1.6 — Fast-Track / Phased",p:"open",a:"Currently 'N/A.' If any component is fast-tracked (hotel construction before CDs, site work overlapping), consider changing. Leaving N/A = can't claim Additional Services for phased coordination."}
+]},
+{id:"art3",label:"Art. 3 — Scope",icon:"§3",title:"Article 3 — Scope of CM's Basic Services",intro:"Article 3 is unmodified standard AIA. Exhibit A adds G702/G703, lien waivers, CPM scheduling, stop-work recommendations. (Change Log #21)",redlines:[
+{s:"§ 3.3.12.4 — Payment Certification ⚠️ VERIFY",p:"important",a:"Protective language limiting what your payment certification represents. Verify not struck by Owner."},
+{s:"§ 3.3.30 — Warranty Walk ⚠️ VERIFY",p:"moderate",a:"One-year warranty walk at no additional compensation. Exhibit A adds 12-month warranty admin (§A7). Confirm acceptable across three components."},
+{s:"Exhibit A — Role Clarity ✅ DONE",p:"done",a:"§A2.2: CM acts strictly as adviser. No trade contracts held. No self-perform. All means/methods/safety = Trade Contractor responsibility."}
+]},
+{id:"art4",label:"Art. 4 — Services",icon:"§4",title:"Article 4 — Supplemental and Additional Services",intro:"Supplemental Services table defers to PAEs. Each PAE Section G has specific assignments. Duration cap at §4.2.5.1.",redlines:[
+{s:"§ 4.1.1 — Supplemental Services Table ✅ DONE",p:"done",a:"All 17 items defer to PAE. PAE-1: Commissioning, Cx Plan, FF&E Coord, Risk, Stakeholder, Owner Separate Contractors → CM. FF&E Procurement, Survey, Geotech → Owner."},
+{s:"§ 4.2.5.1 — Duration Cap ✅ NEW",p:"done",a:"21 months from execution. Extension = Additional Services per §11.3. CM doesn't absorb Owner/Architect delays. (Change Log #2)"},
+{s:"PAE-2 Supplemental Services ⚠️ REVIEW",p:"important",a:"CM takes: Commissioning (14 units), Cx Plan, FF&E Coord, Risk Analysis (phased occupancy), Stakeholder, Courtyard/Landscape Coord. Review when PAE-2 authorized."},
+{s:"PAE-3 Supplemental Services ⚠️ REVIEW",p:"important",a:"CM takes: Site Lighting/Irrigation Cx, Site Systems Cx Plan, Risk Analysis (utility delays, NPDES, phasing), Stakeholder, SWPPP Field Oversight. SWPPP is significant ongoing scope."}
+]},
+{id:"art6",label:"Art. 6 — Cost of Work",icon:"§6",title:"Article 6 — Cost of the Work",intro:"Critical new §6.1.1 expands Cost of Work definition for fee calculation.",redlines:[
+{s:"§ 6.1.1 — Cost of Work Expansion ✅ NEW",p:"done",a:"Includes CM GC reimbursable costs (§11.6.1.1), all Reimbursable Expenses (§11.6), and Owner-direct purchases. 3% fee on broadest base. (Change Log #3)"},
+{s:"§ 6 — GMP Prevention ✅ VERIFIED",p:"done",a:"No GMP language anywhere in V7. Pure cost-plus CMa advisory. GMP would require formal amendment or transition to A133/A134."}
+]},
+{id:"art8",label:"Art. 8 — Disputes",icon:"§8",title:"Article 8 — Claims and Disputes",intro:"Arbitration selected. New liability cap. Mutual consequential damages waiver in place.",redlines:[
+{s:"§ 8.1.3 — Indemnification ⚠️ VERIFY",p:"critical",a:"CM indemnifies Owner for third-party claims. Verify limited to CM's negligent acts only — not design errors, Owner decisions, or trade contractor issues."},
+{s:"§ 8.1.3.1 — Aggregate Liability Cap ✅ NEW",p:"done",a:"CM exposure capped at total compensation received. Exceptions: fraud, willful misconduct, third-party bodily injury/property damage. (Change Log #4)"},
+{s:"§ 8.1.4 — Consequential Damages Waiver ✅ VERIFIED",p:"done",a:"Mutual waiver in place. Owner waives lost revenue/financing/profit. CM waives lost business/profit except anticipated profit from Work."},
+{s:"§ 8.2.4 — Arbitration ✅ DONE",p:"done",a:"Arbitration box checked. Mediation is condition precedent."},
+{s:"§ 8.2.3 — Venue",p:"open",a:"Mediation at project location (Upland, IN). Consider negotiating Georgia venue for arbitration, or accept Indiana given project location."}
+]},
+{id:"art9",label:"Art. 9 — Termination",icon:"§9",title:"Article 9 — Termination or Suspension",intro:"New termination fee formula (§9.7.1). One-year post-SC termination needs multi-component clarification.",redlines:[
+{s:"§ 9.7.1 — Termination Fee ✅ NEW",p:"done",a:"3 months personnel (salary × 1.4×) + unamortized GC commitments (WillScot, software) + proportional CM Advisory Fee earned. (Change Log #5)"},
+{s:"§ 9.8 — One-Year Termination",p:"open",a:"Terminates one year from Substantial Completion. Clarify: last component's SC, not first. If PAE-2/3 finish years after PAE-1, agreement must remain active for warranty admin.",l:"Recommend: 'This Agreement shall terminate one (1) year from the date of Substantial Completion of the last component to achieve Substantial Completion under the Program.'"}
+]},
+{id:"art11",label:"Art. 11 — Compensation",icon:"§11",title:"Article 11 — Compensation",intro:"Most heavily modified article. Contains cost-plus structure, 12-category GC reimbursables, and accelerated payment terms.",redlines:[
+{s:"§ 11.1.1 — Precon Compensation ✅ DONE",p:"done",a:"Salary × 1.4×, prorated monthly by time allocation. No CM Fee during precon."},
+{s:"§ 11.1.2 — Construction Phase ✅ DONE",p:"done",a:"(a) Personnel at 1.4×, (b) GC Costs per §11.6, (c) 3% Fee on total Cost of Work, (d) Fee continues during non-CM-fault extensions."},
+{s:"§ 11.1.2.1 — Fee Calculation ✅ NEW",p:"done",a:"3% on total Cost of Work: trade contracts, COs, Owner-direct, GC reimbursables, all reimbursable expenses. Billed monthly proportional to cost invoiced. (Change Log #6)"},
+{s:"§ 11.6.1.1 — 12 GC Categories ✅ NEW",p:"done",a:"(1) Personnel, (2) Job Trailer, (3) Tech Hardware, (4) Software, (5) Printing, (6) Site Equipment, (7) Fencing/Security, (8) Temp Utilities, (9) Safety, (10) Vehicles, (11) Small Tools, (12) Bonds/Insurance. (Change Log #7)"},
+{s:"§ 11.6.2 — Reimbursable Markup ✅ DONE",p:"done",a:"Expenses + 3% markup."},
+{s:"§ 11.8.1.1 — Initial Payment ⚠️ TBD",p:"critical",a:"Amount is 'TBN — To be negotiated.' MUST fill in before signing. Minimum payment under Agreement, credited against final invoice."},
+{s:"§ 11.8.2.1.1 — Payment Terms ✅ NEW",p:"done",a:"15 days (was 30). Interest 1.5%/month (18% annual) from day 16. Semi-monthly invoicing. (Change Log #8)"}
+]},
+{id:"art12",label:"Art. 12 — Special Terms",icon:"§12",title:"Article 12 — Special Terms and Conditions",intro:"Nine special provisions — the bulk of your protective redlines.",redlines:[
+{s:"§ 12.1 — Master Program / PAE ✅",p:"done",a:"Three-component program, each authorized by separate PAE. (#9)"},
+{s:"§ 12.2 — Semi-Monthly Billing ✅",p:"done",a:"1st and 15th of each month. (#10)"},
+{s:"§ 12.3 — Labor Multiplier ✅",p:"done",a:"1.4× covers burden: taxes, benefits, insurance, overhead. (#11)"},
+{s:"§ 12.4 — Technology/Software ✅",p:"done",a:"Cross-refs §11.6.1.1.4 as reimbursable GC cost. (#12)"},
+{s:"§ 12.5 — GC Budget Pre-Approval ✅",p:"done",a:"CM submits by 12 categories. Owner approves within 15 days. Within budget = pre-authorized. Over = prior written approval. (#13)"},
+{s:"§ 12.6 — Extended Duration GC ✅",p:"done",a:"Past 21 months, GC continues at current rates. 3% fee applies. Annual CPI escalation on personnel. (#14)"},
+{s:"§ 12.7 — Owner Payment / Suspension ✅",p:"done",a:"Zero CM liability for Owner non-payment to trades. 7-day notice suspension. No delay liability during suspension. (#15)"},
+{s:"§ 12.8 — Multi-Project Allocation ✅",p:"done",a:"CM determines shared cost split. Documented monthly. 15-day Owner objection window — silence = acceptance. (#16)"},
+{s:"§ 12.9 — Cost Disputes ✅",p:"done",a:"Pay undisputed when due. 15-day notice on disputes. 30-day resolution. No withholding leverage. (#17)"}
+]},
+{id:"exhibitb",label:"Exhibit B — Rates",icon:"💰",title:"Exhibit B V3 — Fee Schedule & Personnel",intro:"Seven sections. V3 adds cross-references to 12-category GC structure, CM Fee calculation, allocation rules, payment terms.",redlines:[
+{s:"B2 — Fee Summary ✅ DONE",p:"done",a:"Three components. 3% CM Fee each. Budgets TBD."},
+{s:"B3 — Salary Schedule ⚠️ TBD",p:"critical",a:"All six personnel confirmed but ALL salaries [TBD]. Must fill before execution. Reconcile with GC Budget hourly rates."},
+{s:"B3 — Zach Title Mismatch ⚠️ FIX",p:"critical",a:"Exhibit B V3 says 'Project Manager.' PAE-1 and Exhibit A say 'Project Director.' GC Budget uses PE rates for Zach. Standardize to 'Project Director.'"},
+{s:"B4 — Reimbursables ✅ DONE",p:"done",a:"Refs §11.6.1.1. Cost + 3% markup. Receipts > $50."},
+{s:"B5 — Additional Services ✅ DONE",p:"done",a:"Salary-based (1.4× + reimbursables) or Percentage-based (3%)."},
+{s:"B6 — Invoice Requirements ✅ DONE",p:"done",a:"Six requirements including 12-category GC breakdown."},
+{s:"B7–B10 — Cross-References ✅ NEW",p:"done",a:"B7: CM Fee (§11.1.2.1). B8: GC Budget (§12.5). B9: Allocation (§12.8). B10: Payment (§11.8.2.1.1). (#28)"}
+]},
+{id:"paes",label:"PAE-1/2/3",icon:"📑",title:"Project Authorization Exhibits",intro:"Three PAEs in one document. PAE-1 ready. PAE-2/3 are frameworks pending authorization.",redlines:[
+{s:"PAE-1 — Hotel & Event Center ✅ READY",p:"done",a:"46,026 SF, 38 rooms, 3 stories. Execution April 1, 2026. Construction on/before April 24, 2026. CDs target August 4, 2026. PCS $50K NTE governs pre-execution work."},
+{s:"PAE-1 F.2 — PCS Agreement ⚠️",p:"important",a:"$50K NTE for pre-execution work. Verify: billed? paid? transition into C132? No conflicting terms?"},
+{s:"PAE-1 F.3 — Building Location ⚠️",p:"important",a:"Location subject to Owner/Architect decision. Equitable adjustment clause exists, but location change cascades to PAE-2 and PAE-3."},
+{s:"PAE-2 — Cottages ⏳ FRAMEWORK",p:"moderate",a:"14 two-bedroom units, central courtyard. Pending program/design/budget finalization. ER Engineering (structural) identified."},
+{s:"PAE-3 — Master Site Dev ⏳ FRAMEWORK",p:"moderate",a:"Five scope categories (C.1-C.5). Owner procures geotech before 60% civil. HWC leads permitting. Utility lead times 8-16 weeks."},
+{s:"All PAEs — Protective Cross-Ref ✅",p:"done",a:"All 11 protective provisions (§4.2.5.1 through §12.9) cross-referenced in every PAE. (#33)"}
+]},
+{id:"changelog",label:"Change Log",icon:"📊",title:"Contract Change Log — 33 Changes",intro:"15 new protective provisions, all tracked in V7.",changeLogs:[
+{doc:"C132-2019 Master Agreement",count:20,items:[
+{n:1,s:"§1.1.1",t:"MODIFIED",d:"Three-component structure. Active Adult removed."},
+{n:2,s:"§4.2.5.1",t:"NEW",d:"21-month duration cap. Extension = Additional Services."},
+{n:3,s:"§6.1.1",t:"NEW",d:"Cost of Work includes CM GC costs, reimbursables, Owner-direct."},
+{n:4,s:"§8.1.3.1",t:"NEW",d:"Liability cap at total compensation received."},
+{n:5,s:"§9.7.1",t:"NEW",d:"Termination fee: 3 months personnel + unamortized GC + pro-rata fee."},
+{n:6,s:"§11.1.2.1",t:"NEW",d:"3% CM Fee on total Cost of Work."},
+{n:7,s:"§11.6.1.1",t:"NEW",d:"12 GC reimbursable categories enumerated."},
+{n:8,s:"§11.8.2.1.1",t:"NEW",d:"15-day payment. 1.5%/mo interest. Semi-monthly invoicing."},
+{n:9,s:"§12.1",t:"ADDED",d:"Master Program / PAE structure."},
+{n:10,s:"§12.2",t:"ADDED",d:"Semi-monthly billing (1st and 15th)."},
+{n:11,s:"§12.3",t:"ADDED",d:"1.4× labor burden multiplier definition."},
+{n:12,s:"§12.4",t:"MODIFIED",d:"Technology/software = reimbursable GC cost."},
+{n:13,s:"§12.5",t:"NEW",d:"GC Budget pre-approval. 15-day Owner review."},
+{n:14,s:"§12.6",t:"NEW",d:"Extended duration GC escalation + CPI adjustment."},
+{n:15,s:"§12.7",t:"NEW",d:"Owner payment of trades / CM suspension rights."},
+{n:16,s:"§12.8",t:"NEW",d:"Multi-project cost allocation. CM determines split."},
+{n:17,s:"§12.9",t:"NEW",d:"Reimbursable cost dispute resolution."},
+{n:18,s:"§13.2",t:"MODIFIED",d:"Exhibits list updated."},
+{n:19,s:"Global",t:"REMOVED",d:"All Active Adult references scrubbed."},
+{n:20,s:"Signature",t:"VERIFIED",d:"Roger DeBoy, Managing Member."}
+]},
+{doc:"Exhibit A — Scope of Services",count:4,items:[
+{n:21,s:"Full Doc",t:"REWRITTEN",d:"Stripped Article 3 duplicates. Additive-only."},
+{n:22,s:"Components",t:"MODIFIED",d:"Four → three components."},
+{n:23,s:"§A7",t:"NEW",d:"Cross-references to protective provisions."},
+{n:24,s:"Signature",t:"MODIFIED",d:"Zach DeBoy, Project Director."}
+]},
+{doc:"Exhibit B — Fee Schedule",count:5,items:[
+{n:25,s:"B2 Table",t:"MODIFIED",d:"Four → three components."},
+{n:26,s:"B3",t:"VERIFIED",d:"6 key staff confirmed. Salaries TBD."},
+{n:27,s:"B4/B6",t:"MODIFIED",d:"Refs §11.6.1.1. 12-category GC invoice breakdown."},
+{n:28,s:"B7–B10",t:"NEW",d:"Cross-reference sections added."},
+{n:29,s:"Signature",t:"MODIFIED",d:"Zach DeBoy, Project Director."}
+]},
+{doc:"Project Authorization Exhibits",count:4,items:[
+{n:30,s:"Structure",t:"CONSOLIDATED",d:"Three files → one document."},
+{n:31,s:"PAE-3",t:"MODIFIED",d:"Renumbered from PAE-4. Master Site Development."},
+{n:32,s:"All PAEs",t:"REMOVED",d:"Active Adult scrubbed."},
+{n:33,s:"All PAEs",t:"NEW",d:"Cross-reference to all 11 protective provisions."}
+]}
+]},
+{id:"checklist",label:"Checklist",icon:"✅",title:"Pre-Execution Checklist",intro:"Items remaining before the Master Agreement and PAE-1 can be executed.",checks:[
+{cat:"Exhibit B — Must Complete",items:["Fill in all six salary [TBD] fields in B3","Fix Zach's title: 'Project Manager' → 'Project Director'","Reconcile Exhibit B salaries with GC Budget workbook hourly rates","Verify salary × 1.4× ÷ 2,080 aligns with billed hourly rate per role"]},
+{cat:"Article 11 — Must Complete",items:["Negotiate and fill in Initial Payment amount (§11.8.1.1)","Confirm semi-monthly billing logistics with Owner (§12.2)"]},
+{cat:"Article 8 — Verify",items:["Verify §8.1.3 indemnification is negligence-only","Decide Georgia vs. Indiana arbitration venue"]},
+{cat:"Article 9 — Verify",items:["Clarify §9.8 one-year termination for multi-component"]},
+{cat:"Article 1 — Consider",items:["Decide whether §1.1.6 (fast-track/phased) should remain 'N/A'"]},
+{cat:"PAE-1 — Before Execution",items:["Confirm PCS Agreement ($50K NTE) status — billed? paid?","Confirm building location decision timeline","Verify PAE-1 schedule dates","Confirm Owner representative authority (Andrea / Jake)"]},
+{cat:"General / Legal",items:["Attorney review (GA + IN licensing)","Complete Exhibit C (Insurance)","Review A232 General Conditions","Verify signatory: Roger (Master) vs. Zach (PAEs/Exhibits)"]}
+]}
+];
+
+let active="overview";
+function render(){
+  // Nav
+  let doneC=0,totalC=0;
+  sections.forEach(s=>{if(s.redlines){s.redlines.forEach(r=>{totalC++;if(r.p==="done")doneC++})}});
+  document.getElementById("done-count").textContent=doneC+" done";
+  document.getElementById("open-count").textContent=(totalC-doneC)+" open";
+  let navH="";
+  sections.forEach(s=>{navH+=`<button class="${active===s.id?'active':''}" onclick="go('${s.id}')"><span class="ico">${s.icon}</span>${s.label}</button>`});
+  document.getElementById("nav-btns").innerHTML=navH;
+  // Content
+  const sec=sections.find(s=>s.id===active);
+  let h=`<h1>${sec.title}</h1><p class="intro">${sec.intro}</p>`;
+  if(sec.details){sec.details.forEach((d,i)=>{h+=`<div class="detail-card"><h3>${d.heading}</h3>`;if(d.text)h+=`<p>${d.text}</p>`;if(d.items){h+="<ul>";d.items.forEach(it=>{h+=`<li>${it}</li>`});h+="</ul>"}h+="</div>"})}
+  if(sec.redlines){sec.redlines.forEach((r,i)=>{const cls=r.l?"clickable":"";h+=`<div class="redline rl-${r.p} ${cls}" id="rl-${i}" onclick="${r.l?`toggleRL(${i})`:''}">`
+  h+=`<div class="top"><div class="left"><div class="badges-row"><span class="badge badge-${r.p}">${({critical:"CRITICAL",important:"IMPORTANT",moderate:"MODERATE",done:"DONE",open:"OPEN"})[r.p]}</span><span class="sec">${r.s}</span></div><p class="desc">${r.a}</p></div>`;if(r.l)h+=`<span class="toggle" id="tgl-${i}">▼ Language</span>`;h+=`</div>`;if(r.l)h+=`<div class="lang" id="lang-${i}">${r.l}</div>`;h+=`</div>`})}
+  if(sec.changeLogs){sec.changeLogs.forEach((cl,i)=>{h+=`<div class="cl-group" id="clg-${i}"><button class="cl-header" onclick="toggleCL(${i})"><span class="cl-title">${cl.doc}</span><span class="cl-right"><span class="cl-count">${cl.count}</span><span id="clga-${i}">▼</span></span></button><div class="cl-body">`;cl.items.forEach(it=>{h+=`<div class="cl-item"><span class="cl-num">#${it.n}</span><span class="cl-sec">${it.s}</span><span class="cl-type type-${it.t}">${it.t}</span><span class="cl-desc">${it.d}</span></div>`});h+=`</div></div>`})}
+  if(sec.checks){sec.checks.forEach((c,ci)=>{h+=`<div class="check-section"><div class="check-head"><h3>${c.cat}</h3><span class="cnt" id="cnt-${ci}">0/${c.items.length}</span></div><div class="progress-bar"><div class="progress-fill" id="pf-${ci}" style="width:0%"></div></div>`;c.items.forEach((it,ii)=>{h+=`<label class="check-label" id="cl-${ci}-${ii}"><input type="checkbox" onchange="toggleCheck(${ci},${ii},${c.items.length})">${it}</label>`});h+=`</div>`})}
+  document.getElementById("content").innerHTML=h;
+}
+function go(id){active=id;render();document.querySelector("main").scrollTop=0}
+function toggleRL(i){const el=document.getElementById("rl-"+i);el.classList.toggle("expanded");const t=document.getElementById("tgl-"+i);t.textContent=el.classList.contains("expanded")?"▲ Hide":"▼ Language"}
+function toggleCL(i){document.getElementById("clg-"+i).classList.toggle("open");const a=document.getElementById("clga-"+i);a.textContent=a.textContent==="▼"?"▲":"▼"}
+function toggleCheck(ci,ii,total){const lbl=document.getElementById("cl-"+ci+"-"+ii);const inp=lbl.querySelector("input");lbl.classList.toggle("checked",inp.checked);const sec=lbl.closest(".check-section");const boxes=sec.querySelectorAll("input[type=checkbox]");let done=0;boxes.forEach(b=>{if(b.checked)done++});document.getElementById("cnt-"+ci).textContent=done+"/"+total;document.getElementById("cnt-"+ci).className=done===total?"cnt all-done":"cnt";const pf=document.getElementById("pf-"+ci);pf.style.width=(done/total*100)+"%";pf.className=done===total?"progress-fill complete":"progress-fill"}
+render();
+</script>
+</body>
+</html>
